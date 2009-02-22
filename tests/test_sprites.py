@@ -28,6 +28,7 @@ game = video.GameWorld((800,600), 'The object of the game is to find parking')
 
 
 foo = clmd_sprite.Player()
+foo.angle  =  200
 
 level = level.GameLevel("test");
 print level
@@ -65,7 +66,11 @@ def doCollisions(group, sprite):
 			pass
 			if(pygame.sprite.spritecollide(sprite,  group, False, pygame.sprite.collide_mask)):
 				print "Collision!"
-	#print collide
+
+				currentSpriteRect = sprite.rect
+				sprite.velocity = sprite.velocity * -1
+				sprite.update()
+				sprite.velocity = .1
 
 
 while (True):
@@ -78,9 +83,15 @@ while (True):
 		if ( keypress.key == K_ESCAPE):
 			break
 		if (keypress.key == K_LEFT):
-			angleDelta = 10
+			if velocityDelta >= 1:
+				angleDelta = 10
+			else:
+				angleDelta = 2
 		if (keypress.key == K_RIGHT):
-			angleDelta = -10
+			if velocityDelta >= 1:
+				angleDelta = -10
+			else:
+				angleDelta = -2
 		if (keypress.key == K_f):
 			pass
 
@@ -120,7 +131,6 @@ while (True):
 	#game.screen.fill( (60,60,60)  )
 	game.paintWorld()
 
-	game.paintSprite(foo)
 	foo.update()
 	currentSpriteRect = foo.rect
 	for sprx in (0,1):
@@ -134,6 +144,8 @@ while (True):
 		foo.rect[1] = worldRect.bottom
 
 	doCollisions(sprg, foo)
+
+	game.paintSprite(foo)
 
 	#pygame.draw.rect( game.screen, ( 0, 10, 255 ), (enemy1.rect[0] - game.camera_x, enemy1.rect[1] - game.camera_y, enemy1.rect[2], enemy1.rect[3]) )
 	game.screen.blit(enemy1.imageFrames[enemy1.idx], (enemy1.rect[0] - game.camera_x, enemy1.rect[1] - game.camera_y) )

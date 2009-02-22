@@ -99,11 +99,11 @@ class GraphicsObjectRotate(GraphicsObject):
 		self.mask = self.maskFrames[self.idx]
 
 
-		if (self.velocity > 0):
-			self.velX = int(self.velocity * .5* math.sin( math.radians(self.angle)))
-			self.velY = int(self.velocity * .5* math.cos( math.radians(self.angle)))
-			self.rect[0] -= self.velX
-			self.rect[1] -= self.velY
+#		if (self.velocity > 0):
+		self.velX = int(self.velocity * .5* math.sin( math.radians(self.angle)))
+		self.velY = int(self.velocity * .5* math.cos( math.radians(self.angle)))
+		self.rect[0] -= self.velX
+		self.rect[1] -= self.velY
 
 		#self.idx = self.idx+1
 		#if (self.idx >= 36):

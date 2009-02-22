@@ -13,7 +13,7 @@ import pygame
 import pygame.locals
 from pygame.locals import *
 import lib
-from lib import gfx, video, level, clmd_sprite
+from lib import gfx, video, level, clmd_sprite, world
 import pygame.time
 
 import pyengine
@@ -23,7 +23,7 @@ from copy import deepcopy
 
 #from pyengine import object
 
-game = video.GameWorld((800,600), 'The object of the game is to find parking')
+game = world.GameWorld((800,600), 'The object of the game is to find parking')
 #worldRect = Rect(-32, -32, 1670, 1220)
 
 
@@ -53,7 +53,6 @@ enemy1.rect[1] = 104
 enemy1.angle  =  340
 enemy1.update()
 sprg.add(enemy1)
-print enemy1.maskFrames[enemy1.idx].get_at((3,3))
 
 timer = pygame.time.Clock()
 
@@ -129,7 +128,6 @@ while (True):
 	foo.angle += angleDelta
 
 	#game.screen.fill( (60,60,60)  )
-	game.paintWorld()
 
 	foo.update()
 	currentSpriteRect = foo.rect
@@ -145,6 +143,7 @@ while (True):
 
 	doCollisions(sprg, foo)
 
+	game.paintWorld()
 	game.paintSprite(foo)
 
 	#pygame.draw.rect( game.screen, ( 0, 10, 255 ), (enemy1.rect[0] - game.camera_x, enemy1.rect[1] - game.camera_y, enemy1.rect[2], enemy1.rect[3]) )

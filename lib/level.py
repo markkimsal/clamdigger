@@ -43,30 +43,34 @@ class GameLevel:
 	def getRect(self):
 		return pygame.Rect( 0, 0, (self.tileSize[0] * len(self.ldata[0])), (self.tileSize[1] *len(self.ldata) ) )
 
-	def paintLevel(self, gX=0, gY=0):
-		y=0
-		for line in self.ldata:
-			x=0
-			for char in line:
-				pygame.draw.rect( self.surf, ( 0, 10 * x, 255 ), (x*self.tileSize[0], y*self.tileSize[1], 32, 32) )
-				if ( self.ldata[y][x] == '.'):
-					tile = gfx.GraphicsObject("plot_empty")
-					self.surf.blit(tile.surf, (x*self.tileSize[0], y*self.tileSize[1] ))
-				if ( self.ldata[y][x] == '>'):
-					tile = gfx.GraphicsObject("plot_left")
-					self.surf.blit(tile.surf, (x*self.tileSize[0], y*self.tileSize[1] ))
-				if ( self.ldata[y][x] == '<'):
-					tile = gfx.GraphicsObject("plot_right")
-					self.surf.blit(tile.surf, (x*self.tileSize[0], y*self.tileSize[1] ))
+#	def paintLevel(self, gX=0, gY=0):
+#		y=0
+#		for line in self.ldata:
+#			x=0
+#			for char in line:
+#				pygame.draw.rect( self.surf, ( 0, 10 * x, 255 ), (x*self.tileSize[0], y*self.tileSize[1], 32, 32) )
+#				if ( self.ldata[y][x] == '.'):
+#					tile = gfx.GraphicsObject("plot_empty")
+#					self.surf.blit(tile.surf, (x*self.tileSize[0], y*self.tileSize[1] ))
+#				if ( self.ldata[y][x] == '>'):
+#					tile = gfx.GraphicsObject("plot_left")
+#					self.surf.blit(tile.surf, (x*self.tileSize[0], y*self.tileSize[1] ))
+#				if ( self.ldata[y][x] == '<'):
+#					tile = gfx.GraphicsObject("plot_right")
+#					self.surf.blit(tile.surf, (x*self.tileSize[0], y*self.tileSize[1] ))
+#
+#				x+=1
+#			y+=1
 
-				x+=1
-			y+=1
-
-	def paintOnLayer(self, layer):
+	def paintOnLayer(self, layer, layerNum=1):
 		"""Use the layer's "tile_coords" to find the right tiles"""
 		visibleTilesX=36
 		visibleTilesY=25
-		layer.surface.fill( (100,100,255))
+
+		##don't fill in blue bg on anything but the lowest layer
+		if (layerNum == 1):
+			layer.surface.fill( (100,100,255))
+
 		#paint a visible square where this layer "thinks" the camera viewport is
 
 		#paint entire layer first for debugging purposes
@@ -74,18 +78,23 @@ class GameLevel:
 		#	for x in range (layer.tilesWide):
 		#		pygame.draw.rect( layer.surface, ( 0, 10 * x, 255 ), (x*self.tileSize[0], y*self.tileSize[1], 32, 32) )
 
+
+		if (layerNum == 1):
+			layerData = self.ldata
+		elif (layerNum == 2):
+			layerData = self.l2data
+
+
+
 		self.initMapTiles()
-#		print coords
+
 		gTileY = layer.tile_coords[1]
 		gTileX = layer.tile_coords[0]
-		#print "gtilex ",gTileX
-		#print "gtiley ",gTileY
 
 		if (gTileX < 0):
 			gTileX = 0
 		if (gTileY < 0):
 			gTileY = 0
-
 
 		gTileOffsX = gTileX + visibleTilesX
 		gTileOffsY = gTileY + visibleTilesY
@@ -95,15 +104,15 @@ class GameLevel:
 		#if (gTileOffsY < 0):
 		#	gTileOffsY =0
 
-		if (gTileOffsX > len(self.ldata[0])):
-			gTileOffsX =len(self.ldata[0])
-		if (gTileOffsY > len(self.ldata)):
-			gTileOffsY =len(self.ldata)
+		if (gTileOffsX > len(layerData[0])):
+			gTileOffsX =len(layerData[0])
+		if (gTileOffsY > len(layerData)):
+			gTileOffsY =len(layerData)
 
 		y=0
 		for row in range(gTileY, gTileOffsY):
 			try:
-				line = self.ldata[row]
+				line = layerData[row]
 			except IndexError:
 				y+=1
 				continue
@@ -112,6 +121,7 @@ class GameLevel:
 			x=0
 			for quantum in range(gTileX, gTileOffsX):
 				#numtile = self.fuglyfont.render("" +`gTileX`+", "+`gTileY`, 0, (255,255,255))
+				tile = None
 				try:
 					char = line[quantum]
 				except IndexError:
@@ -123,23 +133,21 @@ class GameLevel:
 					#pygame.draw.rect(layer.surface, (255,0,0), (x*self.tileSize[0], y*self.tileSize[1], 32, 32) ,1)
 #					str = ''.join([x.__str__(), ',',y.__str__()])
 #					layer.surface.blit(fuglyfont.render( str,0, (255,255,255)).convert(), (x*self.tileSize[0],y*self.tileSize[1]))
-				if ( char == '>'):
+				elif ( char == '>'):
 					tile = self.mapTiles['leftTile']
-					#layer.surface.blit(tile.surf, (x*self.tileSize[0], y*self.tileSize[1] ))
-				if ( char == '<'):
+				elif ( char == '<'):
 					tile = self.mapTiles['rightTile']
-					#layer.surface.blit(tile.surf, (x*self.tileSize[0], y*self.tileSize[1] ))
-
-				if ( char == '+'):
+				elif ( char == '+'):
 					tile = self.mapTiles['crossTile']
-				if ( char == '|'):
+				elif ( char == '|'):
 					tile = self.mapTiles['vertTile']
-					#layer.surface.blit(vertTile.surf, (x*self.tileSize[0], y*self.tileSize[1] ))
-				if ( char == '-'):
+				elif ( char == '-'):
 					tile = self.mapTiles['horizTile']
-					#layer.surface.blit(horizTile.surf, (x*self.tileSize[0], y*self.tileSize[1] ))
+				elif ( char == 'o'):
+					tile = self.mapTiles['cloudTile']
 
-				layer.surface.blit(tile.surf, (x*self.tileSize[0], y*self.tileSize[1] ))
+				if tile is not None:
+					layer.surface.blit(tile.surf, (x*self.tileSize[0], y*self.tileSize[1] ))
 
 				#layer.surface.blit(numtile, (x*self.tileSize[0], y*self.tileSize[1] ))
 				x+=1
@@ -155,4 +163,5 @@ class GameLevel:
 			self.mapTiles['horizTile'] = gfx.GraphicsObject("plot_horiz")
 			self.mapTiles['leftTile']  = gfx.GraphicsObject("plot_left")
 			self.mapTiles['rightTile'] = gfx.GraphicsObject("plot_right")
+			self.mapTiles['cloudTile'] = gfx.GraphicsObject("plot_cloud")
 

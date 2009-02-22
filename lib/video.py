@@ -139,7 +139,7 @@ class Layer:
 	pos_x = 0
 	pos_y = 0
 
-	def __init__(this,size=(28,24)):
+	def __init__(this,size=(32,24)):
 		this.tilesWide = size[0]
 		this.tilesHigh = size[1]
 		this.surface = pygame.Surface((this.tilesWide*TILE_W,this.tilesHigh*TILE_H)).convert()

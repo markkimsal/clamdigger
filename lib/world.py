@@ -83,10 +83,15 @@ class GameWorld:
 		"""adjust the camera movement to keep the sprite in view
 		"""
 		#__FIXME__ use tilesize * 4 instead of 128
-		if sprite.rect[0] > (self.camera_x + self.size[0] - 128) and sprite.velX < 0:
+		tilepadding = lib.video.TILE_H
+		worldRect = self.currentLevel.getRect()
+
+		if sprite.rect[0] > (self.camera_x + self.size[0] - tilepadding*4) and \
+			(self.camera_x + self.size[0] < worldRect.right) and sprite.velX < 0:
 			self.moveCamera( (130 + (sprite.rect[0] - self.camera_x - self.size[0]) ), 0)
 
-		if sprite.rect[1] > (self.camera_y + self.size[1] - 128) and sprite.velY < 0:
+		if sprite.rect[1] > (self.camera_y + self.size[1] - tilepadding*4) and \
+			(self.camera_y + self.size[1] < worldRect.bottom) and sprite.velY < 0:
 			self.moveCamera(0, (130 + (sprite.rect[1] - self.camera_y - self.size[1]) ) )
 			
 		if sprite.rect[0] < (self.camera_x + 70) and self.camera_x > 0 and sprite.velX > 0:

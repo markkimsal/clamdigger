@@ -135,11 +135,11 @@ while (True):
 		if worldRect[sprx] > currentSpriteRect[sprx]:
 			foo.rect[sprx] = worldRect[sprx]
 
-	if worldRect.right < currentSpriteRect[0]:
-		foo.rect[0] = worldRect.right
+	if worldRect.right < currentSpriteRect[0] + foo.width:
+		foo.rect[0] = worldRect.right - foo.width
 
-	if worldRect.bottom < currentSpriteRect[1]:
-		foo.rect[1] = worldRect.bottom
+	if worldRect.bottom < currentSpriteRect[1] + foo.height:
+		foo.rect[1] = worldRect.bottom - foo.height
 
 	doCollisions(sprg, foo)
 

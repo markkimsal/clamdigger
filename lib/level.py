@@ -62,14 +62,16 @@ class GameLevel:
 #				x+=1
 #			y+=1
 
-	def paintOnLayer(self, layer, layerNum=1):
+	def paintOnLayer(self, layer):
 		"""Use the layer's "tile_coords" to find the right tiles"""
 		visibleTilesX=36
 		visibleTilesY=25
 
 		##don't fill in blue bg on anything but the lowest layer
-		if (layerNum == 1):
+		if (layer.z == 1):
 			layer.surface.fill( (100,100,255))
+		else:
+			layer.clear()
 
 		#paint a visible square where this layer "thinks" the camera viewport is
 
@@ -79,9 +81,9 @@ class GameLevel:
 		#		pygame.draw.rect( layer.surface, ( 0, 10 * x, 255 ), (x*self.tileSize[0], y*self.tileSize[1], 32, 32) )
 
 
-		if (layerNum == 1):
+		if (layer.z == 1):
 			layerData = self.ldata
-		elif (layerNum == 2):
+		elif (layer.z == 2):
 			layerData = self.l2data
 
 
@@ -154,6 +156,7 @@ class GameLevel:
 			y+=1
 
 		#pygame.draw.rect(layer.surface, (0,255,0), (32,32, 640, 480), 2)
+		layer.setNeedsRepaint(0)
 
 	def initMapTiles(self):
 		if len(self.mapTiles) < 1:

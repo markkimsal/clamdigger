@@ -14,10 +14,13 @@ class Layer:
 
 	pos_x = 0
 	pos_y = 0
+	z     = 0
 	sprg  = None
 	isTransparent = False
+	needsRepaint = 0
 
-	def __init__(this,size=(32,24)):
+	def __init__(this, z_index, size=(32,24)):
+		this.z = z_index
 		this.tilesWide = size[0]
 		this.tilesHigh = size[1]
 		this.surface = pygame.Surface((this.tilesWide*TILE_W,this.tilesHigh*TILE_H)).convert()
@@ -31,6 +34,10 @@ class Layer:
 		this.surface.set_colorkey( (0,0,0) )
 		this.tile_coords = [0,0]
 
+	def clear(this):
+		if (this.isTransparent):
+			this.surface.fill( (0, 0, 0) )
+
 	def setTransparent(this, on=True):
 		this.isTransparent = on
 		if (this.isTransparent):
@@ -41,6 +48,8 @@ class Layer:
 		this.pos_x += this.velocity * ( 1 + (timer.TICK_DIFF/100)) * x
 		this.pos_y += this.velocity * (1 + (timer.TICK_DIFF/100)) * y
 
+	def setNeedsRepaint(self, n=1):
+		self.needsRepaint = n
 
 	def checkLeft(this):
 		if (this.pos_x < TILE_W*-4):

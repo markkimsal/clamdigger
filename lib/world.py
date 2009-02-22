@@ -30,28 +30,33 @@ class GameWorld:
 
 
 	def initLayers(this):
-		this.BG1 = Layer()
-		this.BG2 = Layer()
+		this.BG1 = Layer(1)
+		this.BG2 = Layer(2)
 		this.BG2.setTransparent(True)
-		this.BG3 = Layer()
-		this.BG4 = Layer()
+		this.BG3 = Layer(3)
+		this.BG4 = Layer(4)
 
 
 	def setLevel(self, l):
 		self.currentLevel = l
 		self.currentLevel.paintOnLayer(self.BG1)
-		self.currentLevel.paintOnLayer(self.BG2, 2)
+		self.currentLevel.paintOnLayer(self.BG2)
 
 	def setPlayerSprite(self, s):
 		self.playerSprite = s
 
 	def paintWorld(self):
-#		self.screen.fill( (0,0,0) )
+		sprite = self.playerSprite
+
+		#check if the layer is out of bounds and needs a repaint
+		for layer in (self.BG1, self.BG2, self.BG3):
+			if layer.needsRepaint == 1:
+				self.currentLevel.paintOnLayer(layer)
+
 		self.screen.blit(self.BG1.surface, (self.BG1.pos_x, self.BG1.pos_y))
 		#self.screen.blit(self.BG3.surface, (self.BG3.pos_x, self.BG3.pos_y))
-		#self.screen.blit(self.BG2.surface, (self.BG2.pos_x, self.BG2.pos_y))
-		sprite = self.playerSprite
 		self.screen.blit(sprite.imageFrames[sprite.idx], (sprite.rect[0] - self.camera_x, sprite.rect[1] - self.camera_y) )
+		self.screen.blit(self.BG2.surface, (self.BG2.pos_x, self.BG2.pos_y))
 
 	def updateWorld(self):
 		self.updateCamera(self.playerSprite)
@@ -66,7 +71,6 @@ class GameWorld:
 			self.camera_x = 0
 			"""
 
-
 		self.BG1.pos_x -= delta_x
 		self.BG1.pos_y -= delta_y
 
@@ -76,18 +80,19 @@ class GameWorld:
 		#print self.BG1.pos_x
 		#print "camera x ", self.camera_x, "         camera y ", self.camera_y
 		#print "bg1 x ", self.BG1.pos_x, "        bg1 y ", self.BG1.pos_y
-		if (self.BG1.checkLeft()):
-			self.currentLevel.paintOnLayer(self.BG1)
+		for layer in (self.BG1, self.BG2, self.BG3):
+			if (layer.checkLeft()):
+				layer.setNeedsRepaint()
 
-		if (self.BG1.checkRight()):
-			self.currentLevel.paintOnLayer(self.BG1)
+			if (self.BG1.checkRight()):
+				layer.setNeedsRepaint()
 
+			if (self.BG1.checkBottom()):
+				layer.setNeedsRepaint()
 
-		if (self.BG1.checkBottom()):
-			self.currentLevel.paintOnLayer(self.BG1)
+			if (self.BG1.checkTop()):
+				layer.setNeedsRepaint()
 
-		if (self.BG1.checkTop()):
-			self.currentLevel.paintOnLayer(self.BG1)
 
 	def updateCamera(self, sprite):
 		"""adjust the camera movement to keep the sprite in view

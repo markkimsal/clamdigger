@@ -29,6 +29,7 @@ game = world.GameWorld((800,600), 'The object of the game is to find parking')
 
 foo = clmd_sprite.Player()
 foo.angle  =  200
+game.setPlayerSprite(foo)
 
 level = level.GameLevel("test");
 print level
@@ -143,8 +144,9 @@ while (True):
 
 	doCollisions(sprg, foo)
 
+	game.updateWorld()
 	game.paintWorld()
-	game.paintSprite(foo)
+	#game.paintSprite(foo)
 
 	#pygame.draw.rect( game.screen, ( 0, 10, 255 ), (enemy1.rect[0] - game.camera_x, enemy1.rect[1] - game.camera_y, enemy1.rect[2], enemy1.rect[3]) )
 	game.screen.blit(enemy1.imageFrames[enemy1.idx], (enemy1.rect[0] - game.camera_x, enemy1.rect[1] - game.camera_y) )

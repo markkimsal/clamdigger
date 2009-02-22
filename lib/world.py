@@ -10,6 +10,8 @@ import pygame.time
 class GameWorld:
 	"""Define a game world, rules, sprites, levels, etc."""
 
+	playerSprite = None
+
 	def __init__(this,size,title='Gameworld Screen'):
 		if pygame.display.get_init():
 			this.screen = pygame.display.get_surface()
@@ -30,6 +32,7 @@ class GameWorld:
 	def initLayers(this):
 		this.BG1 = Layer()
 		this.BG2 = Layer()
+		this.BG2.setTransparent(True)
 		this.BG3 = Layer()
 		this.BG4 = Layer()
 
@@ -39,12 +42,19 @@ class GameWorld:
 		self.currentLevel.paintOnLayer(self.BG1)
 		self.currentLevel.paintOnLayer(self.BG2, 2)
 
+	def setPlayerSprite(self, s):
+		self.playerSprite = s
 
 	def paintWorld(self):
 #		self.screen.fill( (0,0,0) )
 		self.screen.blit(self.BG1.surface, (self.BG1.pos_x, self.BG1.pos_y))
-		self.screen.blit(self.BG3.surface, (self.BG3.pos_x, self.BG3.pos_y))
-		self.screen.blit(self.BG2.surface, (self.BG2.pos_x, self.BG2.pos_y))
+		#self.screen.blit(self.BG3.surface, (self.BG3.pos_x, self.BG3.pos_y))
+		#self.screen.blit(self.BG2.surface, (self.BG2.pos_x, self.BG2.pos_y))
+		sprite = self.playerSprite
+		self.screen.blit(sprite.imageFrames[sprite.idx], (sprite.rect[0] - self.camera_x, sprite.rect[1] - self.camera_y) )
+
+	def updateWorld(self):
+		self.updateCamera(self.playerSprite)
 
 	def moveCamera(self,delta_x=0, delta_y=0):
 		self.camera_y +=  delta_y
@@ -79,7 +89,7 @@ class GameWorld:
 		if (self.BG1.checkTop()):
 			self.currentLevel.paintOnLayer(self.BG1)
 
-	def paintSprite(self, sprite):
+	def updateCamera(self, sprite):
 		"""adjust the camera movement to keep the sprite in view
 		"""
 		#__FIXME__ use tilesize * 4 instead of 128
@@ -104,6 +114,5 @@ class GameWorld:
 			#print "vel ", sprite.velX, sprite.velY
 			#print "camera ", self.camera_x, self.camera_y
 		#pygame.draw.rect( self.screen, ( 0, 10, 255 ), (sprite.rect[0] - self.camera_x, sprite.rect[1] - self.camera_y, sprite.rect[2], sprite.rect[3]) )
-		self.screen.blit(sprite.imageFrames[sprite.idx], (sprite.rect[0] - self.camera_x, sprite.rect[1] - self.camera_y) )
 	
 

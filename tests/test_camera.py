@@ -93,9 +93,10 @@ while (True):
 #	velY = int(velocityDelta * .5* math.cos( math.radians(angleDelta)))
 #	print velX, velY
 
-	game.moveCamera(velX, velY)
+	#game.moveCamera(velX, velY)
 
 	#game.screen.fill( (60,60,60)  )
+	game.updateWorld()
 	game.paintWorld()
 
 	#pygame.display.update(( 0,0, 320,320))

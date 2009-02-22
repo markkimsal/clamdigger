@@ -15,6 +15,7 @@ class Layer:
 	pos_x = 0
 	pos_y = 0
 	sprg  = None
+	isTransparent = False
 
 	def __init__(this,size=(32,24)):
 		this.tilesWide = size[0]
@@ -29,6 +30,12 @@ class Layer:
 
 		this.surface.set_colorkey( (0,0,0) )
 		this.tile_coords = [0,0]
+
+	def setTransparent(this, on=True):
+		this.isTransparent = on
+		if (this.isTransparent):
+			this.surface.set_colorkey( (0,0,0) )
+			this.surface.fill( (0, 0, 0) )
 
 	def move(this,x,y):
 		this.pos_x += this.velocity * ( 1 + (timer.TICK_DIFF/100)) * x

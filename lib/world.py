@@ -55,7 +55,8 @@ class GameWorld:
 
 		self.screen.blit(self.BG1.surface, (self.BG1.pos_x, self.BG1.pos_y))
 		#self.screen.blit(self.BG3.surface, (self.BG3.pos_x, self.BG3.pos_y))
-		self.screen.blit(sprite.imageFrames[sprite.idx], (sprite.rect[0] - self.camera_x, sprite.rect[1] - self.camera_y) )
+		if sprite is not None:
+			self.screen.blit(sprite.imageFrames[sprite.idx], (sprite.rect[0] - self.camera_x, sprite.rect[1] - self.camera_y) )
 		self.screen.blit(self.BG2.surface, (self.BG2.pos_x, self.BG2.pos_y))
 
 	def updateWorld(self):
@@ -64,12 +65,11 @@ class GameWorld:
 	def moveCamera(self,delta_x=0, delta_y=0):
 		self.camera_y +=  delta_y
 		self.camera_x +=  delta_x
-		"""
+
 		if (self.camera_y < 0 ):
 			self.camera_y = 0
 		if (self.camera_x < 0 ):
 			self.camera_x = 0
-			"""
 
 		self.BG1.pos_x -= delta_x
 		self.BG1.pos_y -= delta_y
@@ -94,13 +94,15 @@ class GameWorld:
 				layer.setNeedsRepaint()
 
 
-	def updateCamera(self, sprite):
+	def updateCamera(self, sprite=None):
 		"""adjust the camera movement to keep the sprite in view
 		"""
 		#__FIXME__ use tilesize * 4 instead of 128
 		tilepadding = lib.video.TILE_H
 		worldRect = self.currentLevel.getRect()
 
+		if sprite is None:
+			return 
 		if sprite.rect[0] > (self.camera_x + self.size[0] - tilepadding*4) and \
 			(self.camera_x + self.size[0] < worldRect.right) and sprite.velX < 0:
 			self.moveCamera( (130 + (sprite.rect[0] - self.camera_x - self.size[0]) ), 0)

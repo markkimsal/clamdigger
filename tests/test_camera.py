@@ -13,7 +13,7 @@ import pygame
 import pygame.locals
 from pygame.locals import *
 import lib
-from lib import gfx, video, level
+from lib import gfx, video, level, world
 import pygame.time
 
 import pyengine
@@ -23,7 +23,7 @@ from pyengine.object import Sprite
 
 import math
 
-game = video.GameWorld((640,480), 'foobar')
+game = world.GameWorld((640,480), 'foobar')
 
 
 
@@ -93,7 +93,7 @@ while (True):
 #	velY = int(velocityDelta * .5* math.cos( math.radians(angleDelta)))
 #	print velX, velY
 
-	#game.moveCamera(velX, velY)
+	game.moveCamera(velX, velY)
 
 	#game.screen.fill( (60,60,60)  )
 	game.updateWorld()

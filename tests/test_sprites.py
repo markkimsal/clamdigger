@@ -18,15 +18,21 @@ import pygame.time
 
 import pyengine
 import pyengine.object
+
+from copy import deepcopy
+
 #from pyengine import object
 
 game = video.GameWorld((800,600), 'The object of the game is to find parking')
+#worldRect = Rect(-32, -32, 1670, 1220)
 
 
 foo = clmd_sprite.Player()
 
 level = level.GameLevel("test");
 print level
+worldRect = level.getRect()
+print worldRect
 
 
 game.setLevel(level)
@@ -50,6 +56,18 @@ print enemy1.maskFrames[enemy1.idx].get_at((3,3))
 
 timer = pygame.time.Clock()
 
+def doCollisions(group, sprite):
+	collide = pygame.sprite.spritecollide(sprite,  group, False)
+	if len(collide) >0:
+		#print "rectangle"
+		sprites = group.sprites()
+		for spr in sprites:
+			pass
+			if(pygame.sprite.spritecollide(sprite,  group, False, pygame.sprite.collide_mask)):
+				print "Collision!"
+	#print collide
+
+
 while (True):
 	timer.tick(40)
 
@@ -69,7 +87,7 @@ while (True):
 
 		if (keypress.key == K_UP):
 			if (velocityDelta < 6):
-				velocityDelta += 2
+				velocityDelta += 1
 
 		if (keypress.key == K_DOWN):
 			velocityDelta = -2
@@ -104,7 +122,18 @@ while (True):
 
 	game.paintSprite(foo)
 	foo.update()
-	game.doCollisions(sprg, foo)
+	currentSpriteRect = foo.rect
+	for sprx in (0,1):
+		if worldRect[sprx] > currentSpriteRect[sprx]:
+			foo.rect[sprx] = worldRect[sprx]
+
+	if worldRect.right < currentSpriteRect[0]:
+		foo.rect[0] = worldRect.right
+
+	if worldRect.bottom < currentSpriteRect[1]:
+		foo.rect[1] = worldRect.bottom
+
+	doCollisions(sprg, foo)
 
 	#pygame.draw.rect( game.screen, ( 0, 10, 255 ), (enemy1.rect[0] - game.camera_x, enemy1.rect[1] - game.camera_y, enemy1.rect[2], enemy1.rect[3]) )
 	game.screen.blit(enemy1.imageFrames[enemy1.idx], (enemy1.rect[0] - game.camera_x, enemy1.rect[1] - game.camera_y) )

@@ -111,17 +111,6 @@ class GameWorld:
 			self.BG1.pos_y=  ( ( -TILE_H *2 ) + pixelsover )
 			#self.camera_y += pixelsover
 
-	def doCollisions(self, group, sprite):
-		collide = pygame.sprite.spritecollide(sprite,  group, False)
-		if len(collide) >0:
-			#print "rectangle"
-			sprites = group.sprites()
-			for spr in sprites:
-				pass
-				if(pygame.sprite.spritecollide(sprite,  group, False, pygame.sprite.collide_mask)):
-					print "Collision!"
-		#print collide
-
 
 	def paintSprite(self, sprite):
 		"""adjust the camera movement to keep the sprite in view
@@ -147,6 +136,9 @@ class GameWorld:
 	
 class Layer:
 
+	pos_x = 0
+	pos_y = 0
+
 	def __init__(this,size=(28,24)):
 		this.tilesWide = size[0]
 		this.tilesHigh = size[1]
@@ -155,19 +147,20 @@ class Layer:
 		for x in range(this.tilesHigh):
 			this.tiles[x] = [None]*this.tilesWide
 		this.velocity = 18 #pixels/second	
-		this.pos_x=-32
-		this.pos_y=-32
+		this.pos_x=-TILE_W*2
+		this.pos_y=-TILE_H*2
+
 		this.surface.set_colorkey( (0,0,0) )
 		this.tile_coords = [0,0]
 
-	def update(this):
-		cy =0
-		cx = 0
-		for y in range(this.size[1]):
-			cy = y<<SHIFT_TILE_H
-			for x in range(this.size[0]):
-				cx = x<<SHIFT_TILE_W
-				this.surface.blit(this.tiles[y][x],(cx,cy))
+#	def update(this):
+#		cy =0
+#		cx = 0
+#		for y in range(this.size[1]):
+#			cy = y<<SHIFT_TILE_H
+#			for x in range(this.size[0]):
+#				cx = x<<SHIFT_TILE_W
+#				this.surface.blit(this.tiles[y][x],(cx,cy))
 
 	def move(this,x,y):
 		this.pos_x += this.velocity * ( 1 + (timer.TICK_DIFF/100)) * x

@@ -41,7 +41,7 @@ class GameLevel:
 		#self.paintLevel()
 
 	def getRect(self):
-		return pygame.Rect( 0, 0, (self.tileSize[0] * len(self.ldata[0])), (self.tileSize[1] *len(self.ldata) ) )
+		return pygame.Rect( 0, 0, (self.tileSize[0] * len(self.ldata[0]) - self.tileSize[0]*4), (self.tileSize[1] *len(self.ldata) - self.tileSize[1]*4 ) )
 
 #	def paintLevel(self, gX=0, gY=0):
 #		y=0

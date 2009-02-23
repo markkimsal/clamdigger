@@ -84,13 +84,13 @@ class GameWorld:
 			if (layer.checkLeft()):
 				layer.setNeedsRepaint()
 
-			if (self.BG1.checkRight()):
+			if (layer.checkRight()):
 				layer.setNeedsRepaint()
 
-			if (self.BG1.checkBottom()):
+			if (layer.checkBottom()):
 				layer.setNeedsRepaint()
 
-			if (self.BG1.checkTop()):
+			if (layer.checkTop()):
 				layer.setNeedsRepaint()
 
 

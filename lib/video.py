@@ -31,18 +31,18 @@ class Layer:
 		this.pos_x=-TILE_W*2
 		this.pos_y=-TILE_H*2
 
-		this.surface.set_colorkey( (0,0,0) )
+		this.surface.set_colorkey( (10,10,10) )
 		this.tile_coords = [0,0]
 
 	def clear(this):
 		if (this.isTransparent):
-			this.surface.fill( (0, 0, 0) )
+			this.surface.fill( (10, 10, 10) )
 
 	def setTransparent(this, on=True):
 		this.isTransparent = on
 		if (this.isTransparent):
-			this.surface.set_colorkey( (0,0,0) )
-			this.surface.fill( (0, 0, 0) )
+			this.surface.set_colorkey( (10,10,10) )
+			this.surface.fill( (10, 10, 10) )
 
 	def move(this,x,y):
 		this.pos_x += this.velocity * ( 1 + (timer.TICK_DIFF/100)) * x
@@ -63,7 +63,7 @@ class Layer:
 
 
 	def checkRight(this):
-		if (this.pos_x > 0) :
+		if (this.pos_x >= 0) :
 			pixelsover = ( this.pos_x )
 
 			#print " *** moving left"
@@ -77,11 +77,12 @@ class Layer:
 	def checkBottom(this):
 		if (this.pos_y < TILE_H*-4):
 			pixelsover = ( (TILE_H*-4) - this.pos_y)
+			#pixelsover = 0
 
 			#print " *** moving down"
 			this.tile_coords[1] += 2
 			#this.pos_y=  ( ( TILE_H * -2) ) + delta_y
-			this.pos_y =  ( ( TILE_H * -2) - pixelsover) 
+			this.pos_y =  ( ( TILE_H * -2) + pixelsover) 
 			return True
 		else:
 			return False
@@ -89,8 +90,9 @@ class Layer:
 
 
 	def checkTop(this):
-		if (this.pos_y > 0) :
+		if (this.pos_y >= 0) :
 			pixelsover = (this.pos_y)
+			#pixelsover = 0
 
 			#print " *** moving up"
 			this.tile_coords[1] -= 2

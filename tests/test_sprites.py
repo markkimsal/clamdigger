@@ -49,9 +49,9 @@ angleDelta = 0
 
 sprg = pyengine.object.SpriteGroup()
 enemy1 = lib.gfx.GraphicsObjectRotate('car2')
-enemy1.rect[0] = 80
-enemy1.rect[1] = 104
-enemy1.angle  =  340
+enemy1.rect[0] = 240
+enemy1.rect[1] =  75
+enemy1.angle  =  270
 enemy1.update()
 sprg.add(enemy1)
 
@@ -65,8 +65,6 @@ def doCollisions(group, sprite):
 		for spr in sprites:
 			pass
 			if(pygame.sprite.spritecollide(sprite,  group, False, pygame.sprite.collide_mask)):
-				print "Collision!"
-
 				currentSpriteRect = sprite.rect
 				sprite.velocity = sprite.velocity * -1
 				sprite.update()

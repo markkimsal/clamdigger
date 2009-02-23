@@ -64,8 +64,6 @@ class GameLevel:
 
 	def paintOnLayer(self, layer):
 		"""Use the layer's "tile_coords" to find the right tiles"""
-		visibleTilesX=36
-		visibleTilesY=25
 
 		##don't fill in blue bg on anything but the lowest layer
 		if (layer.z == 1):
@@ -80,6 +78,8 @@ class GameLevel:
 		#	for x in range (layer.tilesWide):
 		#		pygame.draw.rect( layer.surface, ( 0, 10 * x, 255 ), (x*self.tileSize[0], y*self.tileSize[1], 32, 32) )
 
+		visibleTilesX = layer.tilesWide
+		visibleTilesY = layer.tilesHigh
 
 		if (layer.z == 1):
 			layerData = self.ldata
@@ -87,11 +87,12 @@ class GameLevel:
 			layerData = self.l2data
 
 
-
 		self.initMapTiles()
 
 		gTileY = layer.tile_coords[1]
 		gTileX = layer.tile_coords[0]
+
+		print gTileY, gTileX
 
 		if (gTileX < 0):
 			gTileX = 0

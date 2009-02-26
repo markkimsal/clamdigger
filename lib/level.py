@@ -150,6 +150,8 @@ class GameLevel:
 					tile = self.mapTiles['cloudTile']
 
 				if tile is not None:
+					#debug tile
+					#pygame.draw.rect(tile.surf, (0,255,0),(0,0,self.tileSize[0], self.tileSize[1]) , 1)
 					layer.surface.blit(tile.surf, (x*self.tileSize[0], y*self.tileSize[1] ))
 
 				#layer.surface.blit(numtile, (x*self.tileSize[0], y*self.tileSize[1] ))

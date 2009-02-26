@@ -18,6 +18,7 @@ class Layer:
 	sprg  = None
 	isTransparent = False
 	needsRepaint = 0
+	tilepadding = 2
 
 	def __init__(this, z_index, size=(32,24)):
 		this.z = z_index
@@ -52,37 +53,42 @@ class Layer:
 		self.needsRepaint = n
 
 	def checkLeft(this):
-		if (this.pos_x < TILE_W*-4):
-			pixelsover = ( (TILE_W*-4) - this.pos_x)
+		tp = this.tilepadding
+		if (this.pos_x < TILE_W*-tp*2):
+			pixelsover = ( (TILE_W*-tp*2) - this.pos_x)
 			#print " *** moving right"
-			this.tile_coords[0] += 2
-			this.pos_x =  ( (-TILE_W * 2)   - pixelsover)
+			this.tile_coords[0] += tp
+			this.pos_x =  ( (-TILE_W * tp)   - pixelsover)
 			return True
 		else:
 			return False
 
 
 	def checkRight(this):
+		tp = this.tilepadding
 		if (this.pos_x >= 0) :
 			pixelsover = ( this.pos_x )
 
 			#print " *** moving left"
-			this.tile_coords[0] -= 2
-			this.pos_x =  (( -TILE_W * 2 ) + pixelsover )
+			this.tile_coords[0] -= tp
+			this.pos_x =  (( -TILE_W * tp ) + pixelsover )
 			return True
 		else:
 			return False
 
 
 	def checkBottom(this):
-		if (this.pos_y < TILE_H*-4):
-			pixelsover = ( (TILE_H*-4) - this.pos_y)
-			#pixelsover = 0
-
+		tp = this.tilepadding
+		if (this.pos_y < TILE_H*-tp*2):
 			#print " *** moving down"
-			this.tile_coords[1] += 2
-			#this.pos_y=  ( ( TILE_H * -2) ) + delta_y
-			this.pos_y =  ( ( TILE_H * -2) + pixelsover) 
+			this.tile_coords[1] += tp
+			if this.tile_coords[1] == 18:
+				this.pos_y =  ( ( TILE_H * -tp) ) 
+			else:
+				pixelsover = ( (TILE_H* (tp*-2)) - this.pos_y)
+				#pixelsover = 0
+				#this.pos_y=  ( ( TILE_H * -tp) ) + delta_y
+				this.pos_y =  ( ( TILE_H * -tp) - pixelsover) 
 			return True
 		else:
 			return False
@@ -90,13 +96,15 @@ class Layer:
 
 
 	def checkTop(this):
-		if (this.pos_y >= 0) :
-			pixelsover = (this.pos_y)
-			#pixelsover = 0
-
+		tp = this.tilepadding
+		if (this.pos_y > 0) :
+			this.tile_coords[1] -= tp
+			if this.tile_coords[1] == 0:
+				this.pos_y=  ( TILE_H * -tp )
+			else :
+				pixelsover = (this.pos_y)
+				this.pos_y=  ( TILE_H * -tp ) + pixelsover
 			#print " *** moving up"
-			this.tile_coords[1] -= 2
-			this.pos_y=  ( ( -TILE_H *2 ) + pixelsover )
 			return True
 		else:
 			return False

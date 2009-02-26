@@ -52,7 +52,7 @@ class Layer:
 	def setNeedsRepaint(self, n=1):
 		self.needsRepaint = n
 
-	def checkLeft(this):
+	def checkRight(this):
 		tp = this.tilepadding
 		if (this.pos_x < TILE_W*-tp*2):
 			pixelsover = ( (TILE_W*-tp*2) - this.pos_x)
@@ -64,14 +64,19 @@ class Layer:
 			return False
 
 
-	def checkRight(this):
+	def checkLeft(this):
 		tp = this.tilepadding
 		if (this.pos_x >= 0) :
-			pixelsover = ( this.pos_x )
-
 			#print " *** moving left"
 			this.tile_coords[0] -= tp
-			this.pos_x =  (( -TILE_W * tp ) + pixelsover )
+			#if we're back at the level origin, don't 
+			# account for screen offset because the screen 
+			# has stopped scrolling at 0,0
+			if (this.tile_coords[0] == 0):
+				this.pos_x =  ( -TILE_W * tp )
+			else:
+				pixelsover = ( this.pos_x )
+				this.pos_x =  (( -TILE_W * tp ) + pixelsover )
 			return True
 		else:
 			return False
@@ -82,13 +87,8 @@ class Layer:
 		if (this.pos_y < TILE_H*-tp*2):
 			#print " *** moving down"
 			this.tile_coords[1] += tp
-			if this.tile_coords[1] == 18:
-				this.pos_y =  ( ( TILE_H * -tp) ) 
-			else:
-				pixelsover = ( (TILE_H* (tp*-2)) - this.pos_y)
-				#pixelsover = 0
-				#this.pos_y=  ( ( TILE_H * -tp) ) + delta_y
-				this.pos_y =  ( ( TILE_H * -tp) - pixelsover) 
+			pixelsover = ( (TILE_H* (tp*-2)) - this.pos_y)
+			this.pos_y =  ( ( TILE_H * -tp) - pixelsover) 
 			return True
 		else:
 			return False
@@ -99,6 +99,9 @@ class Layer:
 		tp = this.tilepadding
 		if (this.pos_y > 0) :
 			this.tile_coords[1] -= tp
+			#if we're back at the level origin, don't 
+			# account for screen offset because the screen 
+			# has stopped scrolling at 0,0
 			if this.tile_coords[1] == 0:
 				this.pos_y=  ( TILE_H * -tp )
 			else :

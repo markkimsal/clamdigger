@@ -111,11 +111,11 @@ class GameWorld:
 			(self.camera_y + self.size[1] < worldRect.bottom) and sprite.velY < 0:
 			self.moveCamera(0, (128 + (sprite.rect[1] - self.camera_y - self.size[1]) ) )
 			
-		if sprite.rect[0] < (self.camera_x + 64) and self.camera_x > 0 and sprite.velX > 0:
-			self.moveCamera(  -64+(sprite.rect[0] - self.camera_x ), 0)
+		if sprite.rect[0] < (self.camera_x + 192) and self.camera_x > 0 and sprite.velX > 0:
+			self.moveCamera(  -192+(sprite.rect[0] - self.camera_x ), 0)
 
-		if sprite.rect[1] < (self.camera_y + 64) and self.camera_y > 0 and sprite.velY > 0:
-			self.moveCamera(0, -64+( sprite.rect[1] - self.camera_y ))
+		if sprite.rect[1] < (self.camera_y + 192) and self.camera_y > 0 and sprite.velY > 0:
+			self.moveCamera(0, -192+( sprite.rect[1] - self.camera_y ))
 
 			#print "sprite ", sprite.rect[0], sprite.rect[1]
 			#print "vel ", sprite.velX, sprite.velY

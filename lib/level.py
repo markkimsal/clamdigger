@@ -92,7 +92,7 @@ class GameLevel:
 		gTileY = layer.tile_coords[1]
 		gTileX = layer.tile_coords[0]
 
-		print gTileY, gTileX
+		#print gTileY, gTileX
 
 		if (gTileX < 0):
 			gTileX = 0

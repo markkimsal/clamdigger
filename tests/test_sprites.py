@@ -86,12 +86,12 @@ while (True):
 			break
 		if (keypress.key == K_LEFT):
 			if velocityDelta >= 1:
-				angleDelta = 10
+				angleDelta = 7
 			else:
 				angleDelta = 4
 		if (keypress.key == K_RIGHT):
 			if velocityDelta >= 1:
-				angleDelta = -10
+				angleDelta = -7
 			else:
 				angleDelta = -4
 		if (keypress.key == K_f):

@@ -45,7 +45,7 @@ class GraphicsObject (pygame.sprite.Sprite):
 
 class GraphicsObjectRotate(GraphicsObject):
 
-	velocityMax = 40
+	velocityMax = 30
 
 	def __init__(self, source):
 		pygame.sprite.Sprite.__init__(self)

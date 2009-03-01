@@ -103,13 +103,18 @@ class GameWorld:
 
 		if sprite is None:
 			return 
-		if sprite.rect[0] > (self.camera_x + self.size[0] - tilepadding*4) and \
-			(self.camera_x + self.size[0] < worldRect.right) and sprite.velX < 0:
-			self.moveCamera( (128 + (sprite.rect[0] - self.camera_x - self.size[0]) ), 0)
 
-		if sprite.rect[1] > (self.camera_y + self.size[1] - tilepadding*4) and \
+		#96 is buffer zone for right and down
+		#128 is buffer zone for left and up
+		#224 is 96+128
+		#192 is 96+96
+		if sprite.rect[0] > (self.camera_x + self.size[0] -96 - tilepadding*4) and \
+			(self.camera_x + self.size[0] < worldRect.right) and sprite.velX < 0:
+			self.moveCamera( (224 + (sprite.rect[0] - self.camera_x - self.size[0]) ), 0)
+
+		if sprite.rect[1] > (self.camera_y + self.size[1] -96 - tilepadding*4) and \
 			(self.camera_y + self.size[1] < worldRect.bottom) and sprite.velY < 0:
-			self.moveCamera(0, (128 + (sprite.rect[1] - self.camera_y - self.size[1]) ) )
+			self.moveCamera(0, (224 + (sprite.rect[1] - self.camera_y - self.size[1]) ) )
 			
 		if sprite.rect[0] < (self.camera_x + 192) and self.camera_x > 0 and sprite.velX > 0:
 			self.moveCamera(  -192+(sprite.rect[0] - self.camera_x ), 0)
@@ -117,9 +122,6 @@ class GameWorld:
 		if sprite.rect[1] < (self.camera_y + 192) and self.camera_y > 0 and sprite.velY > 0:
 			self.moveCamera(0, -192+( sprite.rect[1] - self.camera_y ))
 
-			#print "sprite ", sprite.rect[0], sprite.rect[1]
-			#print "vel ", sprite.velX, sprite.velY
-			#print "camera ", self.camera_x, self.camera_y
 		#pygame.draw.rect( self.screen, ( 0, 10, 255 ), (sprite.rect[0] - self.camera_x, sprite.rect[1] - self.camera_y, sprite.rect[2], sprite.rect[3]) )
 	
 

@@ -8,7 +8,6 @@ else:
 
 sys.path.append( os.path.join(CLMD_fullpath ))
 
-
 import pygame
 import pygame.locals
 from pygame.locals import *
@@ -76,7 +75,8 @@ key = keypress.type
 keyStatus = KEYUP
 
 while (True):
-	timer.tick(40)
+	#timer.tick(45)
+	timer.tick(45)
 
 	if (key == QUIT):
 			break
@@ -86,14 +86,14 @@ while (True):
 			break
 		if (keypress.key == K_LEFT):
 			if velocityDelta >= 1:
-				angleDelta = 7
-			else:
 				angleDelta = 4
+			else:
+				angleDelta = 2
 		if (keypress.key == K_RIGHT):
 			if velocityDelta >= 1:
-				angleDelta = -7
-			else:
 				angleDelta = -4
+			else:
+				angleDelta = -2
 		if (keypress.key == K_f):
 			pass
 
@@ -148,9 +148,7 @@ while (True):
 
 	game.updateWorld()
 	game.paintWorld()
-	#game.paintSprite(foo)
 
-	#pygame.draw.rect( game.screen, ( 0, 10, 255 ), (enemy1.rect[0] - game.camera_x, enemy1.rect[1] - game.camera_y, enemy1.rect[2], enemy1.rect[3]) )
 	game.screen.blit(enemy1.imageFrames[enemy1.idx], (enemy1.rect[0] - game.camera_x, enemy1.rect[1] - game.camera_y) )
 	pygame.display.flip()
 
@@ -158,10 +156,9 @@ while (True):
 	#for e in keylist:
 	#	keypress = e
 	key = keypress.type
-	pygame.time.wait(0) 
 	idx = idx+1
 	if (idx%5):
-		pygame.event.pump()
 		pygame.event.clear(MOUSEMOTION)
+		id=0
 
 pygame.quit()

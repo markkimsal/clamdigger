@@ -40,10 +40,7 @@ print worldRect
 game.setLevel(level)
 
 
-keypress = pygame.event.poll()
-key = keypress.type
 idx = 0
-keyStatus = KEYUP
 velocityDelta = 0
 angleDelta = 0
 
@@ -70,6 +67,13 @@ def doCollisions(group, sprite):
 				sprite.update()
 				sprite.velocity = .1
 
+
+
+pygame.event.clear()
+pygame_event_poll = pygame.event.poll
+keypress = pygame_event_poll()
+key = keypress.type
+keyStatus = KEYUP
 
 while (True):
 	timer.tick(40)
@@ -150,14 +154,14 @@ while (True):
 	game.screen.blit(enemy1.imageFrames[enemy1.idx], (enemy1.rect[0] - game.camera_x, enemy1.rect[1] - game.camera_y) )
 	pygame.display.flip()
 
-	keypress = pygame.event.poll()
+	keypress = pygame_event_poll()
 	#for e in keylist:
 	#	keypress = e
 	key = keypress.type
 	pygame.time.wait(0) 
-	pygame.event.pump()
 	idx = idx+1
 	if (idx%5):
+		pygame.event.pump()
 		pygame.event.clear(MOUSEMOTION)
 
 pygame.quit()
